@@ -45,10 +45,12 @@ io.on('connection', function (socket) {
                 
             });
         }
+
         let game = gameDB.get(gameId);
 
         game.playersId.push(socket.id);
-        game.scores.push(0);    
+        game.scores.push(0);
+        gameDB.set(gameId, game);
     
         if (game.playersId.length === 1) {
             io.to(game.playersId[0]).emit('isPlayerA');
@@ -57,7 +59,6 @@ io.on('connection', function (socket) {
         if (game.playersId.length >= 3) {
             io.to(game.playersId[0]).emit('enableStartButton');
         }
-        gameDB.set(gameId, game);
     });
 
 
